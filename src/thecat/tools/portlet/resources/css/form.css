@@ -1,0 +1,140 @@
+.form{
+	margin:1em 0;
+	color:#222;
+	width:100%; /* customize width, this form have fluid layout */
+	}
+.form h3{
+	margin:0;
+	background:#57a700 url(../images/form_heading.gif) repeat-x;		
+	color:#fff;
+	font-size:20px;
+	border:1px solid #57a700;
+	border-bottom:none;
+	}		
+.form h3 span{
+	display:block;
+	padding:10px 20px;
+	background:url(../images/001_55.png) no-repeat 95% 50%;			
+	}
+.form h2{
+	margin:0;
+	background:#57a700 url(../images/form_heading.gif) repeat-x;		
+	color:#fff;
+	font-size:16px;
+	border:1px solid #57a700;
+	border-bottom:none;
+	}		
+.form h2 span{
+	display:block;
+	padding:10px 20px;			
+	}					
+.form fieldset{
+	margin:0;
+	padding:0;
+	border:none;	
+	border-top:3px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	background:#eee url(../images/form_top.gif) repeat-x;
+	padding-bottom:1em;
+	}		
+.form legend{display:none;}	
+.form p{margin:.5em 20px;}	
+.form label{display:block;}	
+.form input, .form textarea{		
+	width:200px;
+	border:1px solid #666;
+	background:#fff url(../images/form_input.gif) repeat-x;
+	padding:5px 3px;
+	color:#000;
+	}		
+.form textarea{
+	height:125px;
+	overflow:auto;
+	}					
+.form p.submit{
+	text-align:right;
+	}	
+.form input[type=submit], .form input[type=reset]{
+	width:200px;
+	background:#aaa;
+	}
+.form input[type=submit]:hover, .form input[type=reset]:hover{
+	background:#ddd;
+	border:1px solid #666;
+	color:#000;
+	}
+.form input[type=image]{
+	width: auto;
+	border: none;
+	padding: none;
+	background: none;
+	margin: none;
+	vertical-align: middle;
+	}
+/*
+.form table{		
+	width:100%;
+	border:1px solid #666;
+	background:#eee url(../images/form_input.gif) repeat-x;
+	padding:5px 3px;
+	margin-top: 1em;
+	color:#000;
+	}
+.form table th{
+	background:#EE8B0A;		
+	color:#fff;
+	border:1px solid #000;
+	}
+*/
+.iceDatPgr{
+	width:420px; 
+	}
+
+.iceDatPgr table{
+	width:0px; 
+	border:none;
+	}
+	
+.iceDatPgrScrBtn{
+	width: 1px;
+	}
+.backBeanChangeTitle{
+    margin: 0;
+    height: 20px;
+    width: 275px;
+    padding: 6px 0 0 8px;
+    background: #FFF url( '../xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
+    border-bottom: 1px solid #d9d9d9;
+}
+.backBeanChangeBody{
+    padding:2px;
+}
+.backBeanChangeBody > div.icePnlGrp:first-child {
+    padding: 15px;
+    background-color: white;
+}
+.iceDatTblRow1{
+	background:#fff;
+}
+.iceDatTblRow2{
+	background:#ccc;
+}
+.iceDatTblRow1:hover{
+	background:#00ff00;
+}
+.iceDatTblRow2:hover{
+	background:#00ff00;
+}
+.greenBackgound{
+	background:#00ff00;
+}
+.icePnlClpsblHdr {
+	font-size: 14px;
+}
+.icePnlClpsblColpsdHdr {
+	font-size: 14px;
+}
+.iceMsgsError {
+	width: 100%;
+}
