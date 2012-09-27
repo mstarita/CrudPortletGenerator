@@ -7,15 +7,9 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 public class BeanUtil {
-
-	public static String[] ORDERED_FIELD_LIST = {
-<#list fieldList as field>
-	"${field.fieldName}"<#if field != fieldList[fieldList?size - 1]>, </#if>
-</#list>
-	};
 	
 	public static List<String> getFieldList(String className) {
-		System.out.println("\t\tgetFieldList of Person class...");
+		System.out.println("\t\tgetFieldList of ${className} class...");
 		
 		List<String> fieldList = new ArrayList<String>();
 		

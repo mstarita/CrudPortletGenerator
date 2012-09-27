@@ -324,7 +324,7 @@ public class Search${className}Layout extends VerticalLayout
 	private void setupResultField() {
 		List<String> fieldList = new ArrayList<String>();
 		
-		for (String field : BeanUtil.ORDERED_FIELD_LIST) {
+		for (String field : Edit${className}ModelBean.ORDERED_FIELD_LIST) {
 			if ((Boolean) editModelBean.getPropResultFieldMap().getItemProperty(field).getValue()) {
 				fieldList.add(field);
 			}

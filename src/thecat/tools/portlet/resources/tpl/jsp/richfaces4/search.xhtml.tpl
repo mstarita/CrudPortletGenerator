@@ -38,7 +38,7 @@
 
 <#list gridFields as field>
 							<rich:column id="${field}" <#noparse>rendered="#{edit</#noparse>${className}ModelBean.resultFieldMap['${field}']}"
-								<#noparse>sortBy="#{</#noparse>${entityName}.${field}}<#noparse>" sortOrder="#{searchPersonModelBean.</#noparse>${field}Order}" ><#noparse>
+								<#noparse>sortBy="#{</#noparse>${entityName}.${field}}<#noparse>" sortOrder="#{search${className}ModelBean.</#noparse>${field}Order}" ><#noparse>
 								<f:facet name="header">
 									<a4j:commandLink value="#{i18n['</#noparse>${entityName}.field.${field}']}" render="${entityName}Table" 
 										<#noparse>action="#{search</#noparse>${className}BackingBean.sortBy${field?cap_first}}" />

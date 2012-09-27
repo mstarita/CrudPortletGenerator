@@ -19,6 +19,12 @@ public class Edit${className}ModelBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	public static final String[] ORDERED_FIELD_LIST = {
+<#list fieldList as field>
+	"${field.fieldName}"<#if field != fieldList[fieldList?size - 1]>, </#if>
+</#list>
+	};
+	
 	private List<String> fieldList;
 
 	private PropertysetItem propSearchFieldMap = new PropertysetItem();

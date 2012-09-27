@@ -8,6 +8,9 @@ import ${viewUtilPackage}.ResourceBundleProperty;
 
 import com.vaadin.data.util.ObjectProperty;
 
+import ${daoPackage}.${className}Dao;
+import ${daoPackage}.${className}DaoImpl;
+
 <#list importList as import>
 import ${import};
 </#list>
@@ -79,7 +82,7 @@ public class ${className}CrudApplicationModelBean {
 		this.searchModelBean = searchModelBean;
 	}
 
-	public RegistryPersonLayout getRegistryContent() {
+	public Registry${className}Layout getRegistryContent() {
 		return registryContent;
 	}
 

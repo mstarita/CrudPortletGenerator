@@ -4,7 +4,7 @@ ${entityName}.field.${field.fieldName}=${field.fieldName}
 </#list>
 
 ${entityName}.search.header=${className}
-person.search.result.help=Tasto destro per visualizzare, modificare, cancellare o stampare il record specificato
+${entityName}.search.result.help=Tasto destro per visualizzare, modificare, cancellare o stampare il record specificato
 ${entityName}.edit.header=Parametri di configurazione di ${className}
 ${entityName}.registry.edit.header=Modifica ${className}
 ${entityName}.registry.new.header=Nuova ${className}

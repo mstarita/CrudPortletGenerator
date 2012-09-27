@@ -51,7 +51,7 @@ def binding = ['packageName': outputPackage, 'className': classForCrud.simpleNam
                'viewUtilPackage': viewUtilPackage, 
                'daoPackage': daoPackage, 
                'fqClassName': fqClassName, 'osivCrud': osivCrud ?: false, 'icefacesExtReq': icefacesExtReq ?: false,
-               'fieldList': [], 'importList': [], 'keyField': keyField, 'searchFields': [], 'gridFields': []]
+               'fieldList': [], 'importList': [], 'keyField': keyField, 'keyFieldType': '', 'searchFields': [], 'gridFields': []]
 
 // Collect the fields name and type
 def declaredGetMethods = classForCrud.getDeclaredMethods().findAll { 
@@ -66,7 +66,15 @@ def declaredGetMethods = classForCrud.getDeclaredMethods().findAll {
 		}.join(', ') + ">"
 	}
 
-	binding.fieldList.add([fieldName: "${StringUtils.uncapitalize(it.name.substring(3))}", fieldType: "${typeAsString}"]) 
+	binding.fieldList.add([fieldName: "${StringUtils.uncapitalize(it.name.substring(3))}", fieldType: "${typeAsString}"])
+	
+	binding.fieldList.each {
+		if (it.fieldName == keyField) {
+			binding.keyFieldType = it.fieldType
+		}
+	}
+	
+
 }
 
 // setup the order of fieldList... if necessary
@@ -159,7 +167,37 @@ def files4config =
 			  'lib':    [inputDir: 'lib', outputDir: 'web/lib', postfix: '',
 						  files: []],
 			  'projlib':[inputDir: 'projlib', outputDir: 'projlib', postfix: '',
-						  files: ['log4j.jar', 'portlet.jar', 'servlet-api.jar']]]
+						  files: ['log4j.jar', 'portlet.jar', 'servlet-api.jar']]],
+		'liferay_jsp' :
+					  ['webcfg': [inputDir: 'tpl/webcfg', outputDir: 'web/WEB-INF', postfix: '.tpl',
+								  files: ['web.xml', 'portlet.xml',
+										  'liferay-portlet.xml', 'liferay-display.xml', 'liferay-hook.xml']],
+					   'i18n':   [inputDir: 'tpl/i18n', outputDir: 'src/resources', postfix: '.tpl',
+								  files: ['Language_it_IT.properties', 'Language_en_US.properties']],
+					   'src':    [inputDir: 'tpl/src', outputDir: "src/${binding.packageName.replaceAll('[.]', '/')}", postfix: '.tpl',
+								  files: ['${className}CrudPortlet.java', '${className}CrudPortletModelBean.java', 'Search${className}Util.java',
+										  'Edit${className}ActionBean.java', 'Edit${className}ActionBeanImpl.java', 'Edit${className}ModelBean.java',
+										  'Registry${className}ActionBean.java', 'Registry${className}ActionBeanImpl.java', 'Registry${className}ModelBean.java',
+										  'Search${className}ActionBean.java', 'Search${className}ActionBeanImpl.java', 'Search${className}ModelBean.java']],
+					   'viewutil':[inputDir: 'tpl/viewutil', outputDir: "src/${binding.viewUtilPackage.replaceAll('[.]', '/')}", postfix: '.tpl',
+									files: ['BeanUtil.java', 'FormOperation.java']],
+					   'jsp':    [inputDir: 'tpl/jsp', outputDir: "web/${binding.entityName}", postfix: '.tpl',
+					              files: ['edit.jsp', 'init.jsp', 'registry.jsp', 'resultAction.jsp', 'search.jsp']],
+					   'css':    [inputDir: 'css', outputDir: 'web/css', postfix: '',
+					              files: ['form.css']],
+					   'printtpl':[inputDir: 'tpl/printtpl', outputDir: "web/docTemplate", postfix: '.tpl',
+									   files: ['lista${className}.ftl', 'dettaglio${className}.ftl']],
+					   'printpng':[inputDir: 'tpl/printtpl', outputDir: "web/docTemplate", postfix: '',
+									   files: ['logo.png']],
+					   'image':  [inputDir: 'images', outputDir: 'web/images', postfix: '',
+									   files: ['delete.png', 'header-bg-light.png', 'page.png', 'pencil.png', 'print.png']],
+					   'lib':    [inputDir: 'lib', outputDir: 'web/lib', postfix: '',
+								   files: []],
+					   'tld':    [inputDir: 'tld', outputDir: 'web/WEB-INF/tld', postfix: '',
+								   files: ['c.tld', 'liferay-aui.tld', 'liferay-portlet.tld', 'liferay-security.tld',
+											   'liferay-theme.tld', 'liferay-ui.tld', 'liferay-util.tld']],
+					   'projlib':[inputDir: 'projlib', outputDir: 'projlib', postfix: '',
+								   files: ['log4j.jar', 'portal-impl.jar', 'portal-service.jar',  'portlet.jar', 'servlet-api.jar', 'util-bridges.jar', 'util-taglib.jar']]]
 		 ]
 
 //Collect class to import
@@ -326,5 +364,5 @@ def showUsage() {
 	println "\t[-fields-order=<field1>,<field2>,...]"
 	println "\t[-verbose] verbose output"
 	println "\t[-tpl-config=<template config dir starting from thecat.tools.portlet.resources.tpl.*...] template configuration - default: icefaces1_8"
-	println "\tAvailable template configuration: icefaces1_8, icefaces3_1, mojarra2, primefaces3_3, moj2tomahawk2, moj2alloy, vaadin, richfaces4"
+	println "\tAvailable template configuration: icefaces1_8, icefaces3_1, mojarra2, primefaces3_3, moj2tomahawk2, moj2alloy, vaadin, richfaces4, liferay_jsp"
 }

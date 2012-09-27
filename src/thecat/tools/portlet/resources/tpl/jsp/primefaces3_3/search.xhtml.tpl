@@ -101,7 +101,7 @@
 				<p:remoteCommand
 					name="printDetail" 
 					actionListener="#{search</#noparse>${className}<#noparse>BackingBean.actionPrintDetail}"
-					onsuccess="window.open('#{facesUtil.baseUrl}/DocumentGeneratorServlet?templateName=dettaglioPerson.ftl', 'file', 'scrollbars=yes,toolbar=no,location=no')" 
+					onsuccess="window.open('#{facesUtil.baseUrl}/DocumentGeneratorServlet?templateName=dettaglio${className}.ftl', 'file', 'scrollbars=yes,toolbar=no,location=no')" 
 					update="msgs" />	
 				<p:remoteCommand
 					name="printResult" 

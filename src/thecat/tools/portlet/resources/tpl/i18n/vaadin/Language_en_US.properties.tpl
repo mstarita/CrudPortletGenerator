@@ -4,7 +4,7 @@ ${entityName}.field.${field.fieldName}=${field.fieldName}
 </#list>
 
 ${entityName}.search.header=${className}
-person.search.result.help=Use right button for show, edit, delete or print the specified record
+${entityName}.search.result.help=Use right button for show, edit, delete or print the specified record
 ${entityName}.edit.header=${className} config parameters
 ${entityName}.registry.edit.header=Edit ${className}
 ${entityName}.registry.new.header=New ${className}

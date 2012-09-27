@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 public class BeanUtil {
 
 	public static List<String> getFieldList(String className) {
-		System.out.println("\t\tgetFieldList of Person class...");
+		System.out.println("\t\tgetFieldList of ${className} class...");
 		
 		List<String> fieldList = new ArrayList<String>();
 		

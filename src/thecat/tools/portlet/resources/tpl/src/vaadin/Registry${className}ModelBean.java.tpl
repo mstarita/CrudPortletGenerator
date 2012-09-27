@@ -26,7 +26,7 @@ public class Registry${className}ModelBean implements Serializable {
 	
 	public void set${className}(${className} ${entityName}) {
 <#list fieldList as field>	
-		this.person.getItemProperty("${field.fieldName}").setValue(person.get${field.fieldName?cap_first}());
+		this.${entityName}.getItemProperty("${field.fieldName}").setValue(${entityName}.get${field.fieldName?cap_first}());
 </#list>
 	}
 	

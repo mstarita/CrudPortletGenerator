@@ -39,24 +39,21 @@
         <portlet-preferences>
 			<preference>
 				<name>searchFields</name>
-					<value>address</value>
-					<value>id</value>
-					<value>firstname</value>
-					<value>lastname</value>
+				<#list searchFields as field>
+					<value>${field}</value>
+				</#list>
 			</preference>
 			<preference>
 				<name>resultFields</name>
-					<value>address</value>
-					<value>id</value>
-					<value>firstname</value>
-					<value>lastname</value>
+				<#list searchFields as field>
+					<value>${field}</value>
+				</#list>
 			</preference>
 			<preference>
 				<name>registryFields</name>
-					<value>address</value>
-					<value>id</value>
-					<value>firstname</value>
-					<value>lastname</value>
+				<#list searchFields as field>
+					<value>${field}</value>
+				</#list>
 			</preference>
 			<preference>
 				<name>rowsPerPage</name>
@@ -70,7 +67,8 @@
 				<name>nColsRegistry</name>
 				<value>2</value>
 			</preference>
-		</portlet-preferences>
+			
+	    </portlet-preferences>
 		
     </portlet>
 </portlet-app>
