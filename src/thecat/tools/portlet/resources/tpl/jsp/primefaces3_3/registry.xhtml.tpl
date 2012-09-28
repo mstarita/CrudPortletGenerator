@@ -16,11 +16,11 @@
 <#list fieldList as field>
 					<#noparse><h:panelGroup rendered="#{edit</#noparse>${className}ModelBean.registryFieldMap['${field.fieldName}']}">
 	<#if keyField == field.fieldName><#noparse>
-						<h:outputLabel value="#{i18n['</#noparse>${entityName}.field.${field.fieldName}']}:" id="lbl${field.fieldName?cap_first}" />
+						<h:outputLabel value="#{i18n['</#noparse>${entityName}.field.${field.fieldName}']}" id="lbl${field.fieldName?cap_first}" />
 						<p:inputText id="txt${field.fieldName?cap_first}"
 							<#noparse>value="#{registry</#noparse>${className}ModelBean.${entityName}.${field.fieldName}}" disabled="true"/>
 	<#else>
-						<h:outputLabel value="<#noparse>#{i18n['</#noparse>${entityName}.field.${field.fieldName}']}:" id="lbl${field.fieldName?cap_first}" />
+						<h:outputLabel value="<#noparse>#{i18n['</#noparse>${entityName}.field.${field.fieldName}']}" id="lbl${field.fieldName?cap_first}" />
 						<p:inputText id="txt${field.fieldName?cap_first}"
 							<#noparse>disabled="#{registry</#noparse>${className}ModelBean.formOperation == 'SHOW'}"
 							<#noparse>value="#{registry</#noparse>${className}ModelBean.${entityName}.${field.fieldName}}" />

@@ -15,7 +15,7 @@
 <#list fieldList as field><#noparse>
 					
 					<h:panelGroup rendered="#{edit</#noparse>${className}ModelBean.searchFieldMap['${field.fieldName}']}"><#noparse>
-						<h:outputLabel value="#{i18n['</#noparse>${entityName}.field.${field.fieldName}']}:" id="lbl${field.fieldName?cap_first}" />
+						<h:outputLabel value="#{i18n['</#noparse>${entityName}.field.${field.fieldName}']}" id="lbl${field.fieldName?cap_first}" />
 						<p:inputText id="txt${field.fieldName?cap_first}"
 							<#noparse>value="#{search</#noparse>${className}ModelBean.search${className}.${field.fieldName}}" />
 						<p:message id="msg${field.fieldName?cap_first}" for="txt${field.fieldName?cap_first}" />
@@ -44,24 +44,24 @@
 							<p:commandLink
 								action="#{search</#noparse>${className}BackingBean.actionShow}">
 								<f:setPropertyActionListener <#noparse>value="#{</#noparse>${entityName}.${keyField}}" 
-						        	<#noparse>target="#{</#noparse>search${className}BackingBean.idSelected}" />
+						        	<#noparse>target="#{</#noparse>search${className}BackingBean.${keyField}Selected}" />
 								<#noparse><h:graphicImage value="/images/page.png" alt="#{i18n['button.show']}" />
 							</p:commandLink>
 							<p:commandLink
 								action="#{search</#noparse>${className}BackingBean.actionEdit}">
 								<f:setPropertyActionListener <#noparse>value="#{</#noparse>${entityName}.${keyField}}" 
-						        	<#noparse>target="#{</#noparse>search${className}BackingBean.idSelected}" />
+						        	<#noparse>target="#{</#noparse>search${className}BackingBean.${keyField}Selected}" />
 								<#noparse><h:graphicImage value="/images/pencil.png" alt="#{i18n['button.edit']}" />
 							</p:commandLink>
 							<p:commandLink onclick="confirmDeletion.show()" ></#noparse>
 								<f:setPropertyActionListener <#noparse>value="#{</#noparse>${entityName}.${keyField}}" 
-						        	<#noparse>target="#{</#noparse>search${className}BackingBean.idSelected}" />
+						        	<#noparse>target="#{</#noparse>search${className}BackingBean.${keyField}Selected}" />
 								<#noparse><h:graphicImage value="/images/delete.png" alt="#{i18n['button.delete']}" />
 							</p:commandLink>
 							<p:commandLink
 								onsuccess="printDetail()" >
 								<f:setPropertyActionListener value="#{</#noparse>${entityName}.${keyField}}" 
-						        	<#noparse>target="#{</#noparse>search${className}BackingBean.idSelected}" />
+						        	<#noparse>target="#{</#noparse>search${className}BackingBean.${keyField}Selected}" />
 								<#noparse><h:graphicImage value="/images/print.png" alt="#{i18n['button.print']}" />
 							</p:commandLink>
 							
@@ -101,7 +101,7 @@
 				<p:remoteCommand
 					name="printDetail" 
 					actionListener="#{search</#noparse>${className}<#noparse>BackingBean.actionPrintDetail}"
-					onsuccess="window.open('#{facesUtil.baseUrl}/DocumentGeneratorServlet?templateName=dettaglio${className}.ftl', 'file', 'scrollbars=yes,toolbar=no,location=no')" 
+					onsuccess="window.open('#{facesUtil.baseUrl}/DocumentGeneratorServlet?templateName=dettaglio</#noparse>${className}<#noparse>.ftl', 'file', 'scrollbars=yes,toolbar=no,location=no')" 
 					update="msgs" />	
 				<p:remoteCommand
 					name="printResult" 

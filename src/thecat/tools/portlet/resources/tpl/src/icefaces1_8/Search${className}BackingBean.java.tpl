@@ -29,7 +29,7 @@ public class Search${className}BackingBean implements Serializable {
 	private Registry${className}ModelBean registryModelBean;
 	private transient I18N i18n;
 <#if ! icefacesExtReq>
-	private Long idSelected;
+	private ${keyFieldType} ${keyField}Selected;
 </#if>
 
 	public void setSearchModelBean(final Search${className}ModelBean searchModelBean) {
@@ -57,10 +57,10 @@ public class Search${className}BackingBean implements Serializable {
 	}
 
 <#if ! icefacesExtReq>
-	public void setIdSelected(final Long reqId) {
-		System.out.println("setIdSelected(Long) [" + reqId + "]");
+	public void set${keyField?cap_first}Selected(final ${keyFieldType} req${keyField?cap_first}) {
+		System.out.println("set${keyField?cap_first}Selected(${keyFieldType}) [" + req${keyField?cap_first} + "]");
 		
-		idSelected = reqId;
+		${keyField}Selected = req${keyField?cap_first};
 	}
 </#if>
 
@@ -81,16 +81,20 @@ public class Search${className}BackingBean implements Serializable {
 		System.out.println("actionDelete invoked!!!");
 		
 <#if icefacesExtReq>
-		String id = FacesUtil.getRequestParameter("id");
-		if (id != null) {
-			Long idSelected = Long.parseLong(id);
-			if (idSelected != null) {
-				System.out.println("idSelected: " + idSelected);
+		String ${keyField} = FacesUtil.getRequestParameter("${keyField}");
+		if (${keyField} != null) {
+	<#if keyFieldType == "String" >
+			${keyFieldType} ${keyField}Selected = ${keyField};
+	<#else>
+			${keyFieldType} ${keyField}Selected = new ${keyFieldType}(${keyField});
+	</#if>
+			if (${keyField}Selected != null) {
+				System.out.println("${keyField}Selected: " + ${keyField}Selected);
 <#else>
-		if (idSelected != null) {
+		if (${keyField}Selected != null) {
 </#if>
 			List<${className}> ${entityName}List = searchModelBean.get${className}List();
-			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(idSelected)));
+			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(${keyField}Selected)));
 			
 			if (${entityName} != null) {
 				// delete the specified record
@@ -113,7 +117,7 @@ public class Search${className}BackingBean implements Serializable {
 		}
 <#if icefacesExtReq>
 		} else {
-			System.out.println("idSelected is NULL!!!");
+			System.out.println("${keyField}Selected is NULL!!!");
 		}
 </#if>
 		
@@ -124,20 +128,24 @@ public class Search${className}BackingBean implements Serializable {
 		System.out.println("actionShow invoked!!!");
 		
 <#if icefacesExtReq>
-		String id = FacesUtil.getRequestParameter("id");
-		if (id != null) {
-			Long idSelected = Long.parseLong(id);
-			if (idSelected != null) {
-				System.out.println("idSelected: " + idSelected);
+		String ${keyField} = FacesUtil.getRequestParameter("${keyField}");
+		if (${keyField} != null) {
+	<#if keyFieldType == "String" >
+			${keyFieldType} ${keyField}Selected = ${keyField};
+	<#else>
+			${keyFieldType} ${keyField}Selected = new ${keyFieldType}(${keyField});
+	</#if>
+			if (${keyField}Selected != null) {
+				System.out.println("${keyField}Selected: " + ${keyField}Selected);
 <#else>
-		if (idSelected != null) {
+		if (${keyField}Selected != null) {
 </#if>
 <#if osivCrud >
 			${className}Dao ${entityName}Dao = new ${className}DaoImpl();
-			${className} ${entityName} = ${entityName}Dao.findBy${keyField?cap_first}(idSelected);
+			${className} ${entityName} = ${entityName}Dao.findBy${keyField?cap_first}(${keyField}Selected);
 <#else>
 			List<${className}> ${entityName}List = searchModelBean.get${className}List();
-			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(idSelected)));
+			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(${keyField}Selected)));
 </#if>
 			
 			if (${entityName} != null) {
@@ -152,7 +160,7 @@ public class Search${className}BackingBean implements Serializable {
 
 <#if icefacesExtReq>		
 		} else {
-			System.out.println("idSelected is NULL!!!");
+			System.out.println("${keyField}Selected is NULL!!!");
 		}
 </#if>
 		return null;
@@ -162,20 +170,24 @@ public class Search${className}BackingBean implements Serializable {
 		System.out.println("actionEdit invoked!!!");
 
 <#if icefacesExtReq>
-		String id = FacesUtil.getRequestParameter("id");
-		if (id != null) {
-			Long idSelected = Long.parseLong(id);
-			if (idSelected != null) {
-				System.out.println("idSelected: " + idSelected);
+		String ${keyField} = FacesUtil.getRequestParameter("${keyField}");
+		if (${keyField} != null) {
+	<#if keyFieldType == "String" >
+			${keyFieldType} ${keyField}Selected = ${keyField};
+	<#else>
+			${keyFieldType} ${keyField}Selected = new ${keyFieldType}(${keyField});
+	</#if>
+			if (${keyField}Selected != null) {
+				System.out.println("${keyField}Selected: " + ${keyField}Selected);
 <#else>
-		if (idSelected != null) {
+		if (${keyField}Selected != null) {
 </#if>
 <#if osivCrud >
 			${className}Dao ${entityName}Dao = new ${className}DaoImpl();
-			${className} ${entityName} = ${entityName}Dao.findBy${keyField?cap_first}(idSelected);
+			${className} ${entityName} = ${entityName}Dao.findBy${keyField?cap_first}(${keyField}Selected);
 <#else>
 			List<${className}> ${entityName}List = searchModelBean.get${className}List();
-			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(idSelected)));
+			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(${keyField}Selected)));
 </#if>
 			
 			if (${entityName} != null) {
@@ -189,7 +201,7 @@ public class Search${className}BackingBean implements Serializable {
 		}
 <#if icefacesExtReq>		
 		} else {
-			System.out.println("idSelected is NULL!!!");
+			System.out.println("${keyField}Selected is NULL!!!");
 		}
 </#if>
 
@@ -230,13 +242,17 @@ public class Search${className}BackingBean implements Serializable {
 		System.out.println("actionPrintDetail invoked!!!");
 
 <#if icefacesExtReq>
-		String id = FacesUtil.getRequestParameter("id");
-		if (id != null) {
-			Long idSelected = Long.parseLong(id);
-			if (idSelected != null) {
-				System.out.println("idSelected: " + idSelected);
+		String ${keyField} = FacesUtil.getRequestParameter("${keyField}");
+		if (${keyField} != null) {
+	<#if keyFieldType == "String" >
+			${keyFieldType} ${keyField}Selected = ${keyField};
+	<#else>
+			${keyFieldType} ${keyField}Selected = new ${keyFieldType}(${keyField});
+	</#if>
+			if (${keyField}Selected != null) {
+				System.out.println("${keyField}Selected: " + ${keyField}Selected);
 <#else>
-		if (idSelected != null) {
+		if (${keyField}Selected != null) {
 </#if>
 			// print the specified record
 			if (searchModelBean.get${className}List() != null && 
@@ -249,10 +265,10 @@ public class Search${className}BackingBean implements Serializable {
 
 <#if osivCrud >
 				${className}Dao ${entityName}Dao = new ${className}DaoImpl();
-				${className} selected${className} = ${entityName}Dao.findBy${keyField?cap_first}(idSelected);
+				${className} selected${className} = ${entityName}Dao.findBy${keyField?cap_first}(${keyField}Selected);
 <#else>
 				List<${className}> ${entityName}List = searchModelBean.get${className}List();
-				${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(idSelected)));
+				${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(${keyField}Selected)));
 </#if>
 	 
 				PortletSession portletSession = (PortletSession) fc.getExternalContext().getSession(false);
@@ -271,7 +287,7 @@ public class Search${className}BackingBean implements Serializable {
 		}
 <#if icefacesExtReq>
 		} else {
-			System.out.println("idSelected is NULL!!!");
+			System.out.println("${keyField}Selected is NULL!!!");
 		}
 </#if>
 	}

@@ -17,13 +17,13 @@ public class Search${className}ModelBean implements Serializable {
 	
 	private BeanItem<${className}> ${entityName}Search;
 	
-	private BeanContainer<Long, ${className}> ${entityName}ListBC;
+	private BeanContainer<${keyFieldType}, ${className}> ${entityName}ListBC;
 	
 	public Search${className}ModelBean() {
 
 		${entityName}Search = new BeanItem<${className}>(new ${className}());
 		
-		${entityName}ListBC = new BeanContainer<Long, ${className}>(${className}.class);
+		${entityName}ListBC = new BeanContainer<${keyFieldType}, ${className}>(${className}.class);
 		${entityName}ListBC.setBeanIdProperty("${keyField}");
 		
 	}
@@ -55,7 +55,7 @@ public class Search${className}ModelBean implements Serializable {
 		
 	}
 	
-	public BeanContainer<Long, ${className}> get${className}ListBC() {
+	public BeanContainer<${keyFieldType}, ${className}> get${className}ListBC() {
 		
 		return ${entityName}ListBC;
 		
@@ -64,8 +64,8 @@ public class Search${className}ModelBean implements Serializable {
 	public List<${className}> get${className}List() {
 		List<${className}> ${entityName}List = new ArrayList<${className}>();
 		
-		for (Long id : ${entityName}ListBC.getItemIds()) {
-			${entityName}List.add(${entityName}ListBC.getItem(id).getBean());
+		for (${keyFieldType} ${keyField} : ${entityName}ListBC.getItemIds()) {
+			${entityName}List.add(${entityName}ListBC.getItem(${keyField}).getBean());
 		}
 		
 		return ${entityName}List;

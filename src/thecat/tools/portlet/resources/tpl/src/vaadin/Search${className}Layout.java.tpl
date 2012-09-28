@@ -380,7 +380,7 @@ public class Search${className}Layout extends VerticalLayout
 		@Override
 		public void handleAction(Action action, Object sender, Object target) {
 			
-			Long ${entityName}${keyField?cap_first} = (Long) target;
+			${keyFieldType} ${entityName}${keyField?cap_first} = (${keyFieldType}) target;
 			${className} ${entityName} = search${className}.getSearchModelBean().get${className}ListBC().getItem(${entityName}${keyField?cap_first}).getBean(); 
 			
 			if (action == SEARCH_ACTION_SHOW) { // Show button

@@ -47,10 +47,16 @@ public class Registry${className}ActionBeanImpl implements Registry${className}A
 		System.out.println("confirmRegistryAction fired!!!");
 		
 		if (!modelBean.getFormOperation().equals(FormOperation.SHOW)) {
-		
-			modelBean.get${className}().setFirstname(ParamUtil.getString(actionRequest, Registry${className}ModelBean.REGISTRY_FIELD_FIRSTNAME));
-			modelBean.get${className}().setLastname(ParamUtil.getString(actionRequest, Registry${className}ModelBean.REGISTRY_FIELD_LASTNAME));
-			modelBean.get${className}().setAddress(ParamUtil.getString(actionRequest, Registry${className}ModelBean.REGISTRY_FIELD_ADDRESS));
+
+<#list fieldList as field>
+	<#if field.fieldName != keyField>
+		<#if field.fieldType == "String" >		
+			modelBean.get${className}().set${field.fieldName?cap_first}((${field.fieldType}) actionRequest.getParameter(Registry${className}ModelBean.REGISTRY_FIELD_${field.fieldName?upper_case}));
+		<#else>
+			modelBean.get${className}().set${field.fieldName?cap_first}(new ${field.fieldType}(actionRequest.getParameter(Registry${className}ModelBean.REGISTRY_FIELD_${field.fieldName?upper_case})));
+		</#if>
+	</#if>
+</#list>
 			
 			if (modelBean.getFormOperation().equals(FormOperation.EDIT)) {
 				try {

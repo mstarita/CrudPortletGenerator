@@ -29,8 +29,8 @@
 		</managed-property>
 		</#noparse><#if ! icefacesExtReq><#noparse>
 		<managed-property>
-			<property-name>idSelected</property-name>
-			<value>#{param.id}</value>
+			<property-name></#noparse>${keyField}Selected</property-name><#noparse>
+			<value>#{param.</#noparse>${keyField}<#noparse>}</value>
 		</#noparse></managed-property>
 		</#if><#noparse>
 	</managed-bean>

@@ -26,7 +26,7 @@ public class Search${className}BackingBean implements Serializable {
 	private Search${className}ModelBean searchModelBean;
 	private Registry${className}ModelBean registryModelBean;
 	private transient I18N i18n;
-	private Long idSelected;
+	private ${keyFieldType} ${keyField}Selected;
 
 	public void setSearchModelBean(final Search${className}ModelBean searchModelBean) {
 		this.searchModelBean = searchModelBean;
@@ -52,10 +52,10 @@ public class Search${className}BackingBean implements Serializable {
 		return i18n;
 	}
 
-	public void setIdSelected(final Long reqId) {
-		System.out.println("setIdSelected(Long) [" + reqId + "]");
+	public void set${keyField?cap_first}Selected(final ${keyFieldType} req${keyField?cap_first}) {
+		System.out.println("set${keyField?cap_first}Selected(${keyFieldType}) [" + req${keyField?cap_first} + "]");
 		
-		idSelected = reqId;
+		${keyField}Selected = req${keyField?cap_first};
 	}
 
 	public String actionSearch() {
@@ -74,9 +74,9 @@ public class Search${className}BackingBean implements Serializable {
 	public String actionDelete() {
 		System.out.println("actionDelete invoked!!!");
 		
-		if (idSelected != null) {
+		if (${keyField}Selected != null) {
 			List<${className}> ${entityName}List = searchModelBean.get${className}List();
-			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(idSelected)));
+			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(${keyField}Selected)));
 			
 			if (${entityName} != null) {
 				// delete the specified record
@@ -104,13 +104,13 @@ public class Search${className}BackingBean implements Serializable {
 	public String actionShow() {
 		System.out.println("actionShow invoked!!!");
 		
-		if (idSelected != null) {
+		if (${keyField}Selected != null) {
 <#if osivCrud >
 			${className}Dao ${entityName}Dao = new ${className}DaoImpl();
-			${className} ${entityName} = ${entityName}Dao.findBy${keyField?cap_first}(idSelected);
+			${className} ${entityName} = ${entityName}Dao.findBy${keyField?cap_first}(${keyField}Selected);
 <#else>
 			List<${className}> ${entityName}List = searchModelBean.get${className}List();
-			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(idSelected)));
+			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(${keyField}Selected)));
 </#if>
 			
 			if (${entityName} != null) {
@@ -128,13 +128,13 @@ public class Search${className}BackingBean implements Serializable {
 	public String actionEdit() {
 		System.out.println("actionEdit invoked!!!");
 
-		if (idSelected != null) {
+		if (${keyField}Selected != null) {
 <#if osivCrud >
 			${className}Dao ${entityName}Dao = new ${className}DaoImpl();
-			${className} ${entityName} = ${entityName}Dao.findBy${keyField?cap_first}(idSelected);
+			${className} ${entityName} = ${entityName}Dao.findBy${keyField?cap_first}(${keyField}Selected);
 <#else>
 			List<${className}> ${entityName}List = searchModelBean.get${className}List();
-			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(idSelected)));
+			${className} ${entityName} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(${keyField}Selected)));
 </#if>
 			
 			if (${entityName} != null) {
@@ -179,7 +179,7 @@ public class Search${className}BackingBean implements Serializable {
 	public void actionPrintDetail(ActionEvent actionEvent) {
 		System.out.println("actionPrintDetail invoked!!!");
 
-		if (idSelected != null) {
+		if (${keyField}Selected != null) {
 			// print the specified record
 			if (searchModelBean.get${className}List() != null && 
 					!searchModelBean.get${className}List().isEmpty()) {
@@ -191,10 +191,10 @@ public class Search${className}BackingBean implements Serializable {
 
 <#if osivCrud >
 				${className}Dao ${entityName}Dao = new ${className}DaoImpl();
-				${className} selected${className} = ${entityName}Dao.findBy${keyField?cap_first}(idSelected);
+				${className} selected${className} = ${entityName}Dao.findBy${keyField?cap_first}(${keyField}Selected);
 <#else>
 				List<${className}> ${entityName}List = searchModelBean.get${className}List();
-				${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(idSelected)));
+				${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(${keyField}Selected)));
 </#if>
 	 
 				PortletSession portletSession = (PortletSession) fc.getExternalContext().getSession(false);

@@ -69,11 +69,10 @@ public class Search${className}ActionBeanImpl implements Search${className}Actio
 	public void resetSearchFieldsAction(ActionRequest actionRequest, ActionResponse actionResponse) {
 
 		System.out.println("resetSearchFieldAction fired!!!");
-		
-		modelBean.getSearch${className}().setId(null);
-		modelBean.getSearch${className}().setFirstname(null);
-		modelBean.getSearch${className}().setLastname(null);
-		modelBean.getSearch${className}().setAddress(null);
+
+<#list fieldList as field>			
+		modelBean.getSearch${className}().set${field.fieldName?cap_first}(null);
+</#list>
 
 		Search${className}Util.setCurPageResult(actionRequest, actionResponse);
 		Search${className}Util.setSortPageResult(actionRequest, actionResponse);
@@ -103,10 +102,10 @@ public class Search${className}ActionBeanImpl implements Search${className}Actio
 
 		System.out.println("printDetailAction fired!!!");
 		
-		${keyFieldType} idSelected = ParamUtil.get${keyFieldType}(actionRequest, "id");
+		${keyFieldType} selected${keyField?cap_first} = new ${keyFieldType}(actionRequest.getParameter("id"));
 		
 		List<${className}> ${entityName}List = modelBean.get${className}List();
-		${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(idSelected)));
+		${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(selected${keyField?cap_first})));
 
 		PortletSession portletSession = actionRequest.getPortletSession(false);
 		portletSession.setAttribute("sourceBean", "selected${className}", PortletSession.APPLICATION_SCOPE);
@@ -128,10 +127,11 @@ public class Search${className}ActionBeanImpl implements Search${className}Actio
 		
 		System.out.println("showAction fired!!!");
 		
-		${keyFieldType} selectedId = ParamUtil.get${keyFieldType}(actionRequest, "id");
+		${keyFieldType} selected${keyField?cap_first} = new ${keyFieldType}(actionRequest.getParameter("id"));
+
 		List<${className}> ${entityName}List = modelBean.get${className}List();
 		
-		${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(selectedId)));
+		${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(selected${keyField?cap_first})));
 		
 		if (selected${className} != null) {
 			registryModelBean.set${className}(selected${className});
@@ -147,9 +147,10 @@ public class Search${className}ActionBeanImpl implements Search${className}Actio
 
 		System.out.println("editAction fired!!!");
 
-		${keyFieldType} idSelected = ParamUtil.get${keyFieldType}(actionRequest, "id");
+		${keyFieldType} selected${keyField?cap_first} = new ${keyFieldType}(actionRequest.getParameter("id"));
+		
 		List<${className}> ${entityName}List = modelBean.get${className}List();
-		${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(idSelected)));
+		${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(selected${keyField?cap_first})));
 		
 		if (selected${className} != null) {
 			registryModelBean.set${className}(selected${className});
@@ -163,11 +164,12 @@ public class Search${className}ActionBeanImpl implements Search${className}Actio
 	@Override
 	public void deleteAction(ActionRequest actionRequest, ActionResponse actionResponse) {
 
-		System.out.println("deleteAction fired!!! [" + ParamUtil.getLong(actionRequest, "id") + "]");
+		System.out.println("deleteAction fired!!!");
 
-		${keyFieldType} idSelected = ParamUtil.get${keyFieldType}(actionRequest, "id");
+		${keyFieldType} selected${keyField?cap_first} = new ${keyFieldType}(actionRequest.getParameter("id"));
+		
 		List<${className}> ${entityName}List = modelBean.get${className}List();
-		${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(idSelected)));
+		${className} selected${className} = ${entityName}List.get(${entityName}List.indexOf(new ${className}(selected${keyField?cap_first})));
 		
 		if (selected${className} != null) {
 			// delete the specified record
@@ -202,16 +204,25 @@ public class Search${className}ActionBeanImpl implements Search${className}Actio
 	
 	private void syncSearch${className}Field(ActionRequest request) {
 		
-		if (ParamUtil.getString(request, Search${className}ModelBean.SEARCH_FIELD_ID).isEmpty() ||
-				!NumberUtils.isNumber(ParamUtil.getString(request, Search${className}ModelBean.SEARCH_FIELD_ID))) {
-			modelBean.getSearch${className}().setId(null);
+		if (ParamUtil.getString(request, Search${className}ModelBean.SEARCH_FIELD_${keyField?upper_case}).isEmpty()) {
+			modelBean.getSearch${className}().set${keyField?cap_first}(null);
 		} else {
-			modelBean.getSearch${className}().setId(ParamUtil.getLong(request, Search${className}ModelBean.SEARCH_FIELD_ID));
+<#if keyFieldType == "String" >
+			modelBean.getSearch${className}().set${keyField?cap_first}(request.getParameter(Search${className}ModelBean.SEARCH_FIELD_${keyField?upper_case}));
+<#else>
+			modelBean.getSearch${className}().set${keyField?cap_first}(new ${keyFieldType}(request.getParameter(Search${className}ModelBean.SEARCH_FIELD_${keyField?upper_case})));
+</#if>
 		}
-		
-		modelBean.getSearch${className}().setFirstname(ParamUtil.getString(request, Search${className}ModelBean.SEARCH_FIELD_FIRSTNAME));
-		modelBean.getSearch${className}().setLastname(ParamUtil.getString(request, Search${className}ModelBean.SEARCH_FIELD_LASTNAME));
-		modelBean.getSearch${className}().setAddress(ParamUtil.getString(request, Search${className}ModelBean.SEARCH_FIELD_ADDRESS));
+
+<#list fieldList as field>
+	<#if field.fieldName != keyField>
+		<#if field.fieldType == "String" >			
+		modelBean.getSearch${className}().set${field.fieldName?cap_first}(request.getParameter(Search${className}ModelBean.SEARCH_FIELD_${field.fieldName?upper_case}));
+		<#else>
+		modelBean.getSearch${className}().set${field.fieldName?cap_first}(new ${field.fieldType}(request.getParameter(Search${className}ModelBean.SEARCH_FIELD_${field.fieldName?upper_case})));
+		</#if>
+	</#if>
+</#list>
 		
 	}
 }
