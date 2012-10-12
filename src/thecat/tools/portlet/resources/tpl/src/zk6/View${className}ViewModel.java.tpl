@@ -20,8 +20,6 @@ import org.zkoss.zk.ui.http.FullDHtmlLayoutPortlet;
 import ${import};
 </#list>
 
-import com.liferay.portal.kernel.util.Validator;
-
 public class View${className}ViewModel implements Search${className}Action, Registry${className}Action {
 
 	private Search${className}Model searchModel;
@@ -55,15 +53,9 @@ public class View${className}ViewModel implements Search${className}Action, Regi
 		labelLoader = (LabelLoader) Executions.getCurrent().getAttribute(FullDHtmlLayoutPortlet.LABEL_LOADER_ATTR_KEY);
 		locale = (Locale) Executions.getCurrent().getAttribute(FullDHtmlLayoutPortlet.LOCALE_ATTR_KEY);
 		
-		if (Validator.isNull(desktop.getAttribute(Registry${className}Model.REGISTRY_MODEL_KEY_ATTR))) {	
-			registryModel = new Registry${className}Model();
-			desktop.setAttribute(Registry${className}Model.REGISTRY_MODEL_KEY_ATTR, registryModel);
-		} else {
-			registryModel = (Registry${className}Model) desktop.getAttribute(Registry${className}Model.REGISTRY_MODEL_KEY_ATTR);
-		}
-		
-		searchModel = new Search${className}Model();
 		editModel = new Edit${className}Model(portletPrefs);
+		searchModel = new Search${className}Model();
+		registryModel = new Registry${className}Model();
 		
 		searchAction = new Search${className}ActionImpl(searchModel, registryModel, labelLoader, locale);
 		registryAction = new Registry${className}ActionImpl(registryModel, searchModel, labelLoader, locale);
