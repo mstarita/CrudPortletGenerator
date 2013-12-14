@@ -19,7 +19,8 @@
 							<c:forEach items="#{edit</#noparse>${className}ModelBean.fieldList}" var="field" >
 								<c:set var="bundlePropName" value="${entityName}<#noparse>.field.#{field}" />
 								<h:outputLabel id="lblSearch#{field}" value="#{i18n[bundlePropName]}" style="width: 10px"/>
-								<p:selectBooleanCheckbox id="chkSearch#{field}" value="#{edit</#noparse>${className}ModelBean.searchFieldMap[field]}" /><#noparse>
+								<p:selectBooleanCheckbox id="chkSearch#{field}" value="#{edit</#noparse>${className}ModelBean.searchFieldMap[field]}" 
+									converter="javax.faces.Boolean" /><#noparse>
 							</c:forEach>							
 						</p:panelGrid>
 						
@@ -51,7 +52,8 @@
 							<c:forEach items="#{edit</#noparse>${className}ModelBean.fieldList}" var="field" ><#noparse>
 								<c:set var="bundlePropName" value="</#noparse>${entityName}<#noparse>.field.#{field}" />
 								<h:outputLabel id="lblResult#{field}" value="#{i18n[bundlePropName]}" style="width: 10px"/>
-								<p:selectBooleanCheckbox id="chkResult#{field}" value="#{edit</#noparse>${className}<#noparse>ModelBean.resultFieldMap[field]}" />
+								<p:selectBooleanCheckbox id="chkResult#{field}" value="#{edit</#noparse>${className}<#noparse>ModelBean.resultFieldMap[field]}" 
+									converter="javax.faces.Boolean" />
 							</c:forEach>							
 						</p:panelGrid>
 						
@@ -85,7 +87,8 @@
 							<c:forEach items="#{edit</#noparse>${className}ModelBean.fieldList}" var="field" ><#noparse>
 								<c:set var="bundlePropName" value="</#noparse>${entityName}<#noparse>.field.#{field}" />
 								<h:outputLabel id="lblRegistry#{field}" value="#{i18n[bundlePropName]}" style="width: 10px"/>
-								<p:selectBooleanCheckbox id="chkRegistry#{field}" value="#{edit</#noparse>${className}ModelBean.registryFieldMap[field]}" /><#noparse>
+								<p:selectBooleanCheckbox id="chkRegistry#{field}" value="#{edit</#noparse>${className}ModelBean.registryFieldMap[field]}" 
+									converter="javax.faces.Boolean" /><#noparse>
 							</c:forEach>							
 						</p:panelGrid>
 						
