@@ -98,7 +98,7 @@
 						<ice:commandButton
 							value="#{i18n['button.deselectAll']}"
 							actionListener="#{edit</#noparse>${className}BackingBean.actionRegistryFieldDeselectAll}" /><#noparse>
-						</p>
+						<p/>
 					</ace:accordionPane>
 					
 					<ace:accordionPane title="#{i18n['registryOptions']}">

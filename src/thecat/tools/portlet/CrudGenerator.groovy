@@ -36,6 +36,7 @@ def gridFields      = keyValueArgs.find { it.key == '-grid-fields'}?.value?.spli
 def fieldsOrder     = keyValueArgs.find { it.key == '-fields-order'}?.value?.split(',')
 def verboseOutput   = keyValueArgs.find { it.key == '-verbose'}?.value
 def tplConfigDir    = keyValueArgs.find { it.key == '-tpl-config'}?.value ?: 'icefaces1_8'
+def liferayVer      = keyValueArgs.find { it.key == '-liferay-version'}?.value ?: '6_1'
 
 def classForCrud = null
 try {
@@ -108,6 +109,24 @@ if (gridFields != null) {
 	binding.fieldList.each {
 		binding.gridFields.add(it.fieldName)
 	}
+}
+
+// setup liferay support lib dir
+def jsfVer = null
+def liferayDefaultVer = null
+def liferaySupportLibDir = null
+def liferayDefaultSupportLibDir = null
+if (tplConfigDir == 'icefaces1_8') { // jsf 1.2
+	jsfVer = '1_2'
+	liferayDefaultVer = '6_1' 
+} else if (['icefaces3_1', 'mojarra2', 'primefaces3_3', 'moj2tomahawk2', 'moj2alloy', 'richfaces4'].find { it == tplConfigDir }) { // jsf 2.1
+	jsfVer = '2_1'
+	liferayDefaultVer = '6_1'
+}
+
+if (jsfVer != null) {
+	liferaySupportLibDir = "liferay_support/jsf${jsfVer}/liferay${liferayVer}"
+	liferayDefaultSupportLibDir = "liferay_support/jsf${jsfVer}/liferay${liferayDefaultVer}"
 }
 
 // outputFiles
@@ -282,7 +301,7 @@ types.sort().unique().findAll { !it.startsWith('java.lang.') && it != 'java.util
 //println "importList: ${binding.importList}"
 
 showRunInfo outputPackage, viewUtilPackage, daoPackage, classForCrud, keyField,
-	osivCrud, binding.fieldList, tplConfigDir
+	osivCrud, binding.fieldList, tplConfigDir, liferayVer, jsfVer
 
 // setup config files
 def files = null
@@ -298,7 +317,9 @@ if (!files) {
 	println "Cannot find the specified ${tplConfigDir} configuration!!!"
 	System.exit 0
 }
-	
+
+def baseLibDir = "thecat/tools/portlet/resources/lib"
+
 // fill files for lib key
 if (verboseOutput) println "fill libs for ${tplConfigDir}"
 
@@ -306,7 +327,7 @@ ZipFile zipFile = new ZipFile(getClass().getProtectionDomain().getCodeSource().g
 zipFile.entries().each {
 	def entryName = FilenameUtils.getName(it.name)
 	//if (it.name.startsWith("thecat/tools/portlet/resources/${files['lib'].value.inputDir}/${tplConfigDir}/")) {
-	if (it.name.startsWith("thecat/tools/portlet/resources/lib/${tplConfigDir}/")) {
+	if (it.name.startsWith("${baseLibDir}/${tplConfigDir}/")) {
 		if (entryName.count > 0) {
 			if (entryName.endsWith('.fake')) {
 				files['lib'].files.add(entryName[0..-6])
@@ -322,11 +343,50 @@ if (!files['lib'].files.count) {
 	System.exit 0
 }
 
+// fill files for liferay support lib
+if (verboseOutput) println "fill liferay support lib for ${tplConfigDir}"
+
+def liferaySupportLibFiles = []
+def liferayDefaultSupportLibFiles = []
+zipFile = new ZipFile(getClass().getProtectionDomain().getCodeSource().getLocation().getFile())
+zipFile.entries().each {
+	def entryName = FilenameUtils.getName(it.name)
+	if (it.name.startsWith("${baseLibDir}/${liferaySupportLibDir}")) {
+		if (entryName.count > 0) {
+			liferaySupportLibFiles.add(entryName)
+		}
+	}
+	if (it.name.startsWith("${baseLibDir}/${liferayDefaultSupportLibDir}")) {
+		if (entryName.count > 0) {
+			liferayDefaultSupportLibFiles.add(entryName)
+		}
+	}
+}
+
+if (liferaySupportLibDir) {
+	if (liferaySupportLibFiles.count) {
+		liferaySupportLibFiles.each {
+			files['lib'].files.add(it)
+		}
+	} else {
+		println ">>> The requested liferay version, ${liferayVer}, not found for the view technology specified."
+		println ">>> Using the default liferay lib, ${liferayDefaultVer}"
+		liferayVer = liferayDefaultVer
+		liferaySupportLibDir = liferayDefaultSupportLibDir
+		liferayDefaultSupportLibFiles.each {
+			files['lib'].files.add(it)
+		}
+	}
+}
+
 print 'Generating code...'
 if (verboseOutput) println ''
 
 files.each { file -> 
 	def baseOutputDir = "output-${tplConfigDir}"
+	if (jsfVer) {
+		baseOutputDir += "-liferay${liferayVer}"
+	}
 	def outputDir = file.value.outputDir
 	def inputDir  = file.value.inputDir
 	def postfix   = file.value.postfix
@@ -338,11 +398,13 @@ files.each { file ->
 		def outputFile = freemark(value, binding)
 		def inputFile = "resources/${inputDir}/${value}"
 		def inputFileConfigDir = "resources/${inputDir}/${tplConfigDir}/${value}"
+		def inputFileLiferaySupportDir = "resources/${inputDir}/${liferaySupportLibDir}/${value}"
 		
 		if (value ==~ /^.+\.\*$/) { // if the entry ends with '.*'	
 			//zipFile = new ZipFile(getClass().getProtectionDomain().getCodeSource().getLocation().getFile())
 			zipFile.entries().each {
 				def entryName = FilenameUtils.getName(FilenameUtils.removeExtension(it.name))
+				
 				if (it.name.startsWith("thecat/tools/portlet/${inputFileConfigDir[0..-2]}")) {
 					inputFile = "resources/${inputDir}/${tplConfigDir}/${entryName}"
 					outputFile = freemark(entryName, binding)
@@ -350,9 +412,12 @@ files.each { file ->
 					inputFile = "resources/${inputDir}/${entryName}"
 					outputFile = freemark(entryName, binding)
 				}
+				
 			}
 		} else if (getClass().getResource(inputFileConfigDir + postfix) != null) {
 			inputFile = inputFileConfigDir
+		} else if (getClass().getResource(inputFileLiferaySupportDir + postfix) != null) {
+			inputFile = inputFileLiferaySupportDir
 		} 
 		
 		if (verboseOutput) println "\t\t$inputFile"
@@ -399,7 +464,7 @@ def getType(type) {
 }
 
 def showRunInfo(outputPackage, viewUtilPackage, daoPackage, classForCrud, keyField,
-	osivCrud, fields, tplConfig) {
+	osivCrud, fields, tplConfig, liferayVer, jsfVer) {
 	println "Output package: ${outputPackage}"
 	println "View Util package: ${viewUtilPackage}"
 	println "Dao package: ${daoPackage}"
@@ -407,6 +472,9 @@ def showRunInfo(outputPackage, viewUtilPackage, daoPackage, classForCrud, keyFie
 	println "Entity class: ${classForCrud.name}"
 	println "Entity key field: ${keyField}"
 	println "TPL Config: ${tplConfig}"
+	if (jsfVer) {
+		println "Liferay Version: ${liferayVer}"
+	}
 	println "Attributes found: (* - key field)"
 	fields.each { field ->
 		def props = []
@@ -431,4 +499,42 @@ def showUsage() {
 	println "\t[-verbose] verbose output"
 	println "\t[-tpl-config=<template config dir starting from thecat.tools.portlet.resources.tpl.*...] template configuration - default: icefaces1_8"
 	println "\tAvailable template configuration: icefaces1_8, icefaces3_1, mojarra2, primefaces3_3, moj2tomahawk2, moj2alloy, vaadin, richfaces4, liferay_jsp, zk6, flex4_6"
+	println "\t[-liferay-version=<version>] Liferay support lib version - default 6_1"
+	println "\tSupported Liferay version: 5_2, 6_0, 6_1"
+	
+	println ""
+	
+	showCompatibilityMatrix()
+}
+
+def showCompatibilityMatrix() {
+	println "*********** Liferay Compatibility Matrix *********"
+	println "*       View             *        Liferay        *"
+	println "*     technology         *        version        *"
+	println "**************************************************"
+	println "*                        * 5.2    * 6.0   * 6.1  *"
+	println "**************************************************"
+	println "* IceFaces 1.8           * No     * Yes   * No   *"
+	println "**************************************************"
+	println "* IceFaces 3.1           * Yes    * Yes   * Yes  *"
+	println "**************************************************"
+	println "* PrimeFaces 3.3         * No     * Yes   * Yes  *"
+	println "**************************************************"
+	println "* RichFaces 4            * Yes(1) * Yes   * Yes  *"
+	println "**************************************************"
+	println "* Mojarra 2 + Alloy      * Yes    * Yes   * Yes  *"
+	println "**************************************************"
+	println "* Mojarra 2 + Tomahawk 2 * Yes    * Yes   * Yes  *"
+	println "**************************************************"
+	println "* Mojarra 2              * Yes    * Yes   * Yes  *"
+	println "**************************************************"
+	println "* Jsp + Liferay TagLibs  * No     * Yes   * No   *"
+	println "**************************************************"
+	println "* Vaadin                 * No     * Yes   * Yes  *"
+	println "**************************************************"
+	println "* ZK6                    * Yes    * Yes   * No   *"
+	println "**************************************************"
+	println "* Flex 4.6               * No     * Yes   * Yes  *"
+	println "**************************************************"
+	println "(1) Portlet context menu don't work"
 }
